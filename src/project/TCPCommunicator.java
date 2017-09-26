@@ -12,12 +12,10 @@ public class TCPCommunicator {
     private PrintWriter printWriter = null; // for writing to ServerRouter
     private BufferedReader bufferedReader = null; // for reading form ServerRouter
 
-    int SockNum = 5555; // port number
-
     // Tries to connect to the ServerRouter
     public void startOrExit() {
         try {
-            socket = new Socket(ProjectConstants.ROUTER_NAME, SockNum);
+            socket = new Socket(ProjectConstants.ROUTER_NAME, ProjectConstants.PORT);
             printWriter = new PrintWriter(socket.getOutputStream(), true);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (UnknownHostException e) {

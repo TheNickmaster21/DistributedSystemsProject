@@ -4,4 +4,5 @@
 public class ProjectConstants {
 
     public static final String ROUTER_NAME = "j263-08.cse1.spsu.edu";
+    public static final int PORT = 5555;
 }
