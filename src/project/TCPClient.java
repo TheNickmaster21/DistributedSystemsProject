@@ -4,13 +4,13 @@ import java.net.*;
 public class TCPClient {
 
     public static void main(String[] args) throws IOException {
-        TCPCommunicator tcpCommunicator = new TCPCommunicator();
+        SocketWrapper socketWrapper = new SocketWrapper();
 
         // Tries to connect to the ServerRouter
-        tcpCommunicator.startOrExit();
+        socketWrapper.startOrExit();
 
-        PrintWriter out = tcpCommunicator.getPrintWriter();
-        BufferedReader in = tcpCommunicator.getBufferedReader();
+        PrintWriter out = new PrintWriter(socketWrapper.getOutputStream());
+        BufferedReader in = new BufferedReader(new InputStreamReader(socketWrapper.getInputStream()));
 
         // Variables for message passing
         Reader reader = new FileReader(ProjectConstants.INPUT_TEXT_FILE_NAME);
@@ -47,6 +47,6 @@ public class TCPClient {
         }
 
         // closing connections
-        tcpCommunicator.end();
+        socketWrapper.end();
     }
 }

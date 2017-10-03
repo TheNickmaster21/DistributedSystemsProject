@@ -1,23 +1,20 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class TCPCommunicator {
+public class SocketWrapper {
 
     // Variables for setting up connection and communication
     private Socket socket = null; // socket to connect with ServerRouter
-    private PrintWriter printWriter = null; // for writing to ServerRouter
-    private BufferedReader bufferedReader = null; // for reading form ServerRouter
+    private InputStream inputStream = null;
+    private OutputStream outputStream = null;
 
     // Tries to connect to the ServerRouter
     public void startOrExit() {
         try {
             socket = new Socket(ProjectConstants.ROUTER_NAME, ProjectConstants.PORT);
-            printWriter = new PrintWriter(socket.getOutputStream(), true);
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            inputStream = socket.getInputStream();
+            outputStream = socket.getOutputStream();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + ProjectConstants.ROUTER_NAME);
             System.exit(1);
@@ -28,16 +25,16 @@ public class TCPCommunicator {
     }
 
     public void end() throws IOException {
-        printWriter.close();
-        bufferedReader.close();
+        inputStream.close();
+        outputStream.close();
         socket.close();
     }
 
-    public PrintWriter getPrintWriter() {
-        return printWriter;
+    public InputStream getInputStream() {
+        return inputStream;
     }
 
-    public BufferedReader getBufferedReader() {
-        return bufferedReader;
+    public OutputStream getOutputStream() {
+        return outputStream;
     }
 }

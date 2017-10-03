@@ -1,16 +1,15 @@
 import java.io.*;
-import java.net.*;
 
 public class TCPServer {
 
     public static void main(String[] args) throws IOException {
-        TCPCommunicator tcpCommunicator = new TCPCommunicator();
+        SocketWrapper socketWrapper = new SocketWrapper();
 
         // Tries to connect to the ServerRouter
-        tcpCommunicator.startOrExit();
+        socketWrapper.startOrExit();
 
-        PrintWriter out = tcpCommunicator.getPrintWriter();
-        BufferedReader in = tcpCommunicator.getBufferedReader();
+        PrintWriter out = new PrintWriter(socketWrapper.getOutputStream());
+        BufferedReader in = new BufferedReader(new InputStreamReader(socketWrapper.getInputStream()));
 
         // Variables for message passing
         String fromServer; // messages sent to ServerRouter
@@ -32,6 +31,6 @@ public class TCPServer {
         }
 
         // closing connections
-        tcpCommunicator.end();
+        socketWrapper.end();
     }
 }
