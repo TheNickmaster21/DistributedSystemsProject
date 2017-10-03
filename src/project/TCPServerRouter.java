@@ -25,9 +25,9 @@ public class TCPServerRouter {
                 SThread t = new SThread(RoutingTable, clientSocket, ind); // creates a thread with a random port
                 t.start(); // starts the thread
                 ind++; // increments the index
-                System.out.println("ServerRouter connected with Client/Server: " + clientSocket.getInetAddress().getHostAddress());
+                System.out.println("ServerRouter connected with someone: " + clientSocket.getInetAddress().getHostAddress());
             } catch (IOException e) {
-                System.err.println("Client/Server failed to connect.");
+                System.err.println("Someone failed to connect.");
                 System.exit(1);
             }
         }//end while

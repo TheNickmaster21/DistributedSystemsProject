@@ -46,7 +46,7 @@ public class SThread extends Thread {
 
             // Communication loop
             while ((inputLine = in.readLine()) != null) {
-                System.out.println("Client/Server said: " + inputLine);
+                System.out.println("someone said: " + inputLine);
                 if (inputLine.equals("Bye.")) // exit statement
                     break;
                 outputLine = inputLine; // passes the input from the machine to the output string for the destination
