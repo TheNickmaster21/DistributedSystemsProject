@@ -1,7 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.lang.Exception;
-
 
 public class SThread extends Thread {
     private Object[][] RTable; // routing table
@@ -39,7 +37,7 @@ public class SThread extends Thread {
 
             // loops through the routing table to find the destination
             for (int i = 0; i < 10; i++) {
-                if (destination.equals(RTable[i][0])) {
+                if (ind != i && destination.equals(RTable[i][0])) {
                     outSocket = (Socket) RTable[i][1]; // gets the socket for communication from the table
                     System.out.println("Found destination: " + destination);
                     outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
