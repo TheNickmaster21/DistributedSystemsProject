@@ -12,14 +12,14 @@ public class SocketWrapper {
     // Tries to connect to the ServerRouter
     public void startOrExit() {
         try {
-            socket = new Socket(ProjectConstants.ROUTER_NAME, ProjectConstants.PORT);
+            socket = new Socket(ProjectConstants.ROUTER_ADDRESS, ProjectConstants.PORT);
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
         } catch (UnknownHostException e) {
-            System.err.println("Don't know about router: " + ProjectConstants.ROUTER_NAME);
+            System.err.println("Don't know about router: " + ProjectConstants.ROUTER_ADDRESS);
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to: " + ProjectConstants.ROUTER_NAME);
+            System.err.println("Couldn't get I/O for the connection to: " + ProjectConstants.ROUTER_ADDRESS);
             System.exit(1);
         }
     }
