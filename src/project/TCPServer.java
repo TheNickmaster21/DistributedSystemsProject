@@ -15,10 +15,9 @@ public class TCPServer {
         // Variables for message passing
         String fromServer; // messages sent to ServerRouter
         String fromClient; // messages received from ServerRouter
-        String address = "10.5.3.196"; // destination IP (Client)
 
         // Communication process (initial sends/receives)
-        out.println(address);// initial send (IP of the destination Client)
+        out.println(ProjectConstants.CLIENT_ADDRESS);// initial send (IP of the destination Client)
         fromClient = in.readLine();// initial receive from router (verification of connection)
         System.out.println("ServerRouter: " + fromClient);
 

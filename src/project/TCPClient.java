@@ -13,15 +13,14 @@ public class TCPClient {
         BufferedReader in = tcpCommunicator.getBufferedReader();
 
         // Variables for message passing
-        Reader reader = new FileReader("file.txt");
+        Reader reader = new FileReader(ProjectConstants.INPUT_TEXT_FILE_NAME);
         BufferedReader fromFile = new BufferedReader(reader); // reader for the string file
         String fromServer; // messages received from ServerRouter
         String fromUser; // messages sent to ServerRouter
-        String address = "10.5.2.109"; // destination IP (Server)
         long t0, t1, t;
 
         // Communication process (initial sends/receives
-        out.println(address);// initial send (IP of the destination Server)
+        out.println(ProjectConstants.SERVER_ADDRESS);// initial send (IP of the destination Server)
         fromServer = in.readLine();//initial receive from router (verification of connection)
         System.out.println("ServerRouter: " + fromServer);
 
