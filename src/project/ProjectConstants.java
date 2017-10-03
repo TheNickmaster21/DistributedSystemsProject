@@ -1,6 +1,3 @@
-/**
- * Created by nickmainschool on 9/26/17.
- */
 public class ProjectConstants {
 
     public static final String SERVER_ADDRESS = "127.0.0.1";
