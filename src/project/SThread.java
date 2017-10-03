@@ -28,9 +28,9 @@ public class SThread extends Thread {
             System.out.println("Forwarding to " + destination);
             out.println("Connected to the router."); // confirmation of connection
 
-            // waits 10 seconds to let the routing table fill with all machines' information
+            // waits 5 seconds to let the routing table fill with all machines' information
             try {
-                Thread.sleep(10000);
+                Thread.sleep(5000);
             } catch (InterruptedException ie) {
                 System.out.println("Thread interrupted");
             }
@@ -47,13 +47,12 @@ public class SThread extends Thread {
             // Communication loop
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("someone said: " + inputLine);
-                if (inputLine.equals("Bye.")) // exit statement
+                if (inputLine.equals(ProjectConstants.EXIT_MESSAGE)) // exit statement
                     break;
                 outputLine = inputLine; // passes the input from the machine to the output string for the destination
 
-                if (outSocket != null) {
+                if (outSocket != null)
                     outTo.println(outputLine); // writes to the destination
-                }
             }// end while
         }// end try
         catch (IOException e) {

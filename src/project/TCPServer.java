@@ -23,7 +23,7 @@ public class TCPServer {
         // Communication while loop
         while ((fromClient = in.readLine()) != null) {
             System.out.println("Client said: " + fromClient);
-            if (fromClient.equals("Bye.")) // exit statement
+            if (fromClient.equals(ProjectConstants.EXIT_MESSAGE)) // exit statement
                 break;
             fromServer = fromClient.toUpperCase(); // converting received message to upper case
             System.out.println("Server said: " + fromServer);

@@ -6,4 +6,6 @@ public class ProjectConstants {
     public static final int PORT = 5555;
 
     public static final String INPUT_TEXT_FILE_NAME = "testText.txt";
+
+    public static final String EXIT_MESSAGE = "<bye />";
 }
