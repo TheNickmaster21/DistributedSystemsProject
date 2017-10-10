@@ -36,6 +36,7 @@ public class SThread extends Thread {
             }
 
             // loops through the routing table to find the destination
+            long t = System.nanoTime();
             for (int i = 0; i < 10; i++) {
                 if (ind != i && destination.equals(RTable[i][0])) {
                     outSocket = (Socket) RTable[i][1]; // gets the socket for communication from the table
@@ -43,6 +44,7 @@ public class SThread extends Thread {
                     outTo = new PrintWriter(outSocket.getOutputStream(), true); // assigns a writer
                 }
             }
+            System.out.println("Lookup table took " + (System.nanoTime() - t) + " nanoseconds");
 
             // Communication loop
             while ((inputLine = in.readLine()) != null) {
