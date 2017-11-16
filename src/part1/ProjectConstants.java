@@ -1,3 +1,5 @@
+package part1;
+
 public class ProjectConstants {
 
     public static final String SERVER_ADDRESS = "127.0.0.1";
