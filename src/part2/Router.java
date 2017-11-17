@@ -3,7 +3,6 @@ package part2;
 import part1.ProjectConstants;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -13,53 +12,19 @@ public class Router implements Runnable {
 
     private Boolean active = false;
 
-    private String myIP;
-    private String myPort;
+    private String port;
 
-    private String otherRouterIP;
-    private String otherRouterPort;
+    private String companionRouterIP;
+    private String companionRouterPort;
 
-    private HashMap<String, RoutingTableEntry> routingTable;
-
-    public Boolean isActive() {
-        return active;
-    }
-
-    public String getMyIP() {
-        return myIP;
-    }
-
-    public String getMyPort() {
-        return myPort;
-    }
-
-    public void setMyPort(String myPort) {
-        this.myPort = myPort;
-    }
-
-    public String getOtherRouterIP() {
-        return otherRouterIP;
-    }
-
-    public void setOtherRouterIP(String otherRouterIP) {
-        this.otherRouterIP = otherRouterIP;
-    }
-
-    public String getOtherRouterPort() {
-        return otherRouterPort;
-    }
-
-    public void setOtherRouterPort(String otherRouterPort) {
-        this.otherRouterPort = otherRouterPort;
-    }
+    private HashMap<String, RoutingTableEntry> routingTable = new HashMap<>();
 
     @Override
     public void run() {
         ServerSocket serverSocket = null; // server socket for accepting connections
         try {
-            serverSocket = new ServerSocket(Integer.parseInt(myPort));
+            serverSocket = new ServerSocket(Integer.parseInt(port));
             System.out.println("ServerRouter is Listening on port: " + ProjectConstants.PORT);
-            myIP = InetAddress.getLocalHost().getHostAddress();
             active = true;
         } catch (IOException e) {
             System.err.println("Could not listen on port: " + ProjectConstants.PORT);
@@ -94,6 +59,34 @@ public class Router implements Runnable {
         }
     }
 
+    public Boolean isActive() {
+        return active;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getCompanionRouterIP() {
+        return companionRouterIP;
+    }
+
+    public void setCompanionRouterIP(String companionRouterIP) {
+        this.companionRouterIP = companionRouterIP;
+    }
+
+    public String getCompanionRouterPort() {
+        return companionRouterPort;
+    }
+
+    public void setCompanionRouterPort(String companionRouterPort) {
+        this.companionRouterPort = companionRouterPort;
+    }
+
     private void register(BufferedReader bufferedReader) throws IOException {
         String[] registrationArgs =
                 {bufferedReader.readLine(), bufferedReader.readLine(), bufferedReader.readLine()};
@@ -125,7 +118,7 @@ public class Router implements Runnable {
             String key) throws IOException {
         Boolean success = false;
         try {
-            Socket socket = new Socket(otherRouterIP, Integer.parseInt(otherRouterPort));
+            Socket socket = new Socket(companionRouterIP, Integer.parseInt(companionRouterPort));
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printWriter.println("extra find");
@@ -149,7 +142,7 @@ public class Router implements Runnable {
 
     public static void main(String[] args) throws IOException {
         Router router = new Router();
-        router.setMyPort("5555");
+        router.setPort("5555");
         new Thread(router).start();
     }
 
