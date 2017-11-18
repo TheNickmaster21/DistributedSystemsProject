@@ -6,8 +6,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Server implements Runnable {
 
@@ -21,32 +23,9 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
-        ServerSocket serverSocket = null; // server socket for accepting connections
-        try {
-            serverSocket = new ServerSocket(Integer.parseInt(port));
-            System.out.println("ServerRouter is Listening on port: " + ProjectConstants.PORT);
-            active = true;
-        } catch (IOException e) {
-            System.err.println("Could not listen on port: " + ProjectConstants.PORT);
-            active = false;
-        }
+        register();
 
-        while (active) {
-            try {
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("ServerRouter connected with someone: " + clientSocket.getInetAddress().getHostAddress());
-                BufferedReader bufferedReader = new BufferedReader(
-                        new InputStreamReader(clientSocket.getInputStream()));
-                PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-                String command = bufferedReader.readLine();
-                bufferedReader.close();
-                printWriter.close();
-                clientSocket.close();
-            } catch (IOException e) {
-                System.err.println("Someone went wrong.");
-                active = false;
-            }
-        }
+        acceptClientCommunication();
     }
 
     public Boolean isActive() {
@@ -85,13 +64,33 @@ public class Server implements Runnable {
         this.routerPort = routerPort;
     }
 
-    private void register(BufferedReader bufferedReader) throws IOException {
-        //Connect to router and give my name
+    private void register() {
+        try {
+            Socket socket = new Socket(routerIP, Integer.parseInt(routerPort));
+            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+            printWriter.println(name);
+            printWriter.println(InetAddress.getLocalHost().getHostAddress());
+            printWriter.println(port);
+            printWriter.close();
+            socket.close();
+        } catch (UnknownHostException e) {
+            System.err.println("Don't know about router: " + ProjectConstants.ROUTER_ADDRESS);
+            System.exit(1);
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for the connection to: " + ProjectConstants.ROUTER_ADDRESS);
+            System.exit(1);
+        }
+    }
+
+    private void acceptClientCommunication() {
+        //Logic for the server actually accepting client connections and doing stuff goes here
     }
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
         server.setName("Text Server");
+        server.setRouterIP("127.0.0.1");
+        server.setRouterPort("5555");
         new Thread(server).start();
     }
 }
