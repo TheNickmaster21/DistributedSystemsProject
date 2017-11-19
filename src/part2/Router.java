@@ -1,7 +1,5 @@
 package part2;
 
-import part1.ProjectConstants;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,10 +25,10 @@ public class Router implements Runnable {
         ServerSocket serverSocket = null; // server socket for accepting connections
         try {
             serverSocket = new ServerSocket(Integer.parseInt(port));
-            System.out.println("ServerRouter is Listening on port: " + ProjectConstants.PORT);
+            System.out.println("ServerRouter is Listening on port: " + port);
             active = true;
         } catch (IOException e) {
-            System.err.println("Could not listen on port: " + ProjectConstants.PORT);
+            System.err.println("Could not listen on port: " + port);
             active = false;
         }
 
@@ -77,9 +75,17 @@ public class Router implements Runnable {
     }
 
     public static void main(String[] args) throws IOException {
-        Router router = new Router();
-        router.setPort("5555");
-        new Thread(router).start();
+        Router router1 = new Router();
+        router1.setPort("5555");
+        router1.setCompanionRouterIP("127.0.0.1");
+        router1.setCompanionRouterPort("5556");
+        new Thread(router1).start();
+
+        Router router2 = new Router();
+        router2.setPort("5556");
+        router2.setCompanionRouterIP("127.0.0.1");
+        router2.setCompanionRouterPort("5555");
+        new Thread(router2).start();
     }
 
     private class ActionHandler implements Runnable {
@@ -170,7 +176,7 @@ public class Router implements Runnable {
         }
     }
 
-    private class RoutingTableEntry {
+    private static class RoutingTableEntry {
 
         private String IP;
         private String port;

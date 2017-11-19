@@ -1,19 +1,12 @@
 package part2;
 
-import part1.ProjectConstants;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Server implements Runnable {
-
-    private Boolean active = false;
 
     private String name;
     private String port;
@@ -26,10 +19,6 @@ public class Server implements Runnable {
         register();
 
         acceptClientCommunication();
-    }
-
-    public Boolean isActive() {
-        return active;
     }
 
     public String getName() {
@@ -68,27 +57,29 @@ public class Server implements Runnable {
         try {
             Socket socket = new Socket(routerIP, Integer.parseInt(routerPort));
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+            printWriter.println("register");
             printWriter.println(name);
             printWriter.println(InetAddress.getLocalHost().getHostAddress());
             printWriter.println(port);
             printWriter.close();
             socket.close();
         } catch (UnknownHostException e) {
-            System.err.println("Don't know about router: " + ProjectConstants.ROUTER_ADDRESS);
+            System.err.println("Don't know about router: " + routerIP + ":" + routerPort);
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to: " + ProjectConstants.ROUTER_ADDRESS);
+            System.err.println("Couldn't get I/O for the connection to: " + routerIP + ":" + routerPort);
             System.exit(1);
         }
     }
 
     private void acceptClientCommunication() {
-        //Logic for the server actually accepting client connections and doing stuff goes here
+        //TODO Logic for the server actually accepting client connections and doing stuff goes here
     }
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
-        server.setName("Text Server");
+        server.setName("Test Server");
+        server.setPort("5655");
         server.setRouterIP("127.0.0.1");
         server.setRouterPort("5555");
         new Thread(server).start();
