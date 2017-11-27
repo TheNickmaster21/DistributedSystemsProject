@@ -1,10 +1,14 @@
 package part2;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.sun.tools.internal.ws.wsdl.document.Output;
+
+import java.io.*;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Server implements Runnable {
 
@@ -73,7 +77,45 @@ public class Server implements Runnable {
     }
 
     private void acceptClientCommunication() {
-        //TODO Logic for the server actually accepting client connections and doing stuff goes here
+        try {
+            ServerSocket serverSocket = new ServerSocket(Integer.valueOf(port));
+            Socket socket = serverSocket.accept();
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+            PrintWriter printWriter = new PrintWriter(outputStreamWriter);
+            InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            switch (name) {
+                case ("text"):
+                    String input = bufferedReader.readLine();
+                    while (!input.equals("end")) {
+                        printWriter.write(input.toUpperCase());
+                        input = bufferedReader.readLine();
+                    }
+                    break;
+
+                case ("audio"):
+                    for (byte b : Files.readAllBytes(Paths.get("Sample Audio.mp3"))) {
+                        outputStreamWriter.write(b);
+                    }
+                    break;
+
+                case ("image"):
+                    for (byte b : Files.readAllBytes(Paths.get("Test Image.png"))) {
+                        outputStreamWriter.write(b);
+                    }
+                    break;
+
+                default:
+                    System.out.println("Server created with invalid name: " + name);
+            }
+
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Server crashed!");
+            System.out.println(e.toString());
+        }
+
     }
 
     public static void main(String[] args) throws IOException {

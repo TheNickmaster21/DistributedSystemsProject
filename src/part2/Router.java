@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -86,6 +87,8 @@ public class Router implements Runnable {
         router2.setCompanionRouterIP("127.0.0.1");
         router2.setCompanionRouterPort("5555");
         new Thread(router2).start();
+
+        System.out.println(InetAddress.getLocalHost().getHostAddress());
     }
 
     private class ActionHandler implements Runnable {
