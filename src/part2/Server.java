@@ -79,38 +79,39 @@ public class Server implements Runnable {
     private void acceptClientCommunication() {
         try {
             ServerSocket serverSocket = new ServerSocket(Integer.valueOf(port));
-            Socket socket = serverSocket.accept();
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
-            PrintWriter printWriter = new PrintWriter(outputStreamWriter);
-            InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            while (!serverSocket.isClosed()) {
+                Socket socket = serverSocket.accept();
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+                PrintWriter printWriter = new PrintWriter(outputStreamWriter);
+                InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-            switch (name) {
-                case ("text"):
-                    String input = bufferedReader.readLine();
-                    while (!input.equals("end")) {
-                        printWriter.write(input.toUpperCase());
-                        input = bufferedReader.readLine();
-                    }
-                    break;
+                switch (name) {
+                    case ("text"):
+                        String input = bufferedReader.readLine();
+                        while (!input.equals("end")) {
+                            printWriter.write(input.toUpperCase());
+                            input = bufferedReader.readLine();
+                        }
+                        break;
 
-                case ("audio"):
-                    for (byte b : Files.readAllBytes(Paths.get("Sample Audio.mp3"))) {
-                        outputStreamWriter.write(b);
-                    }
-                    break;
+                    case ("audio"):
+                        for (byte b : Files.readAllBytes(Paths.get("Sample Audio.mp3"))) {
+                            outputStreamWriter.write(b);
+                        }
+                        break;
 
-                case ("image"):
-                    for (byte b : Files.readAllBytes(Paths.get("Test Image.png"))) {
-                        outputStreamWriter.write(b);
-                    }
-                    break;
+                    case ("image"):
+                        for (byte b : Files.readAllBytes(Paths.get("Test Image.png"))) {
+                            outputStreamWriter.write(b);
+                        }
+                        break;
 
-                default:
-                    System.out.println("Server created with invalid name: " + name);
+                    default:
+                        System.out.println("Server created with invalid name: " + name);
+                }
+                socket.close();
             }
-
-            socket.close();
         } catch (IOException e) {
             System.out.println("Server crashed!");
             System.out.println(e.toString());
