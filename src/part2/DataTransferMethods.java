@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class DataTransferMethods {
 
-    public static final int BUFFER_SIZE = 16;
+    public static final int BUFFER_SIZE = 32;
 
     public static void sendFile(Socket socket, String fileName) {
         try {
@@ -45,12 +45,15 @@ public class DataTransferMethods {
 
             byte[] buffer = new byte[BUFFER_SIZE];
             int length;
+
+            stopWatch.start();
             while ((length = inputStream.read(buffer)) != -1) {
-                csvWriter.writeLine(String.valueOf(BUFFER_SIZE), String.valueOf(stopWatch.restartAndGetDifferance()));
+                csvWriter.writeLine(String.valueOf(BUFFER_SIZE), String.valueOf(stopWatch.getDifference()));
                 if (writingNewFile) {
                     outputStream.write(buffer, 0, length);
                     outputStream.flush();
                 }
+                stopWatch.start();
             }
 
             csvWriter.close();
@@ -67,7 +70,7 @@ public class DataTransferMethods {
 
     public static void main(String[] args) throws IOException {
         int port = 3434;
-        String fileName = "testText.txt";
+        String fileName = "Test Image.jpg";
 
         new Thread(() -> {
             try {
