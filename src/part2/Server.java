@@ -86,6 +86,8 @@ public class Server implements Runnable {
                 InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
+                String fileName;
+
                 switch (name) {
                     case ("text"):
                         String input = bufferedReader.readLine();
@@ -96,14 +98,20 @@ public class Server implements Runnable {
                         break;
 
                     case ("audio"):
-                        for (byte b : Files.readAllBytes(Paths.get("Sample Audio.mp3"))) {
+                        fileName = bufferedReader.readLine();
+
+                        for (byte b : Files.readAllBytes(Paths.get(fileName))) {
                             outputStreamWriter.write(b);
+                            outputStreamWriter.flush();
                         }
                         break;
 
                     case ("image"):
-                        for (byte b : Files.readAllBytes(Paths.get("Test Image.png"))) {
+                        fileName = bufferedReader.readLine();
+
+                        for (byte b : Files.readAllBytes(Paths.get(fileName))) {
                             outputStreamWriter.write(b);
+                            outputStreamWriter.flush();
                         }
                         break;
 
@@ -116,7 +124,6 @@ public class Server implements Runnable {
             System.out.println("Server crashed!");
             System.out.println(e.toString());
         }
-
     }
 
     public static void main(String[] args) throws IOException {
