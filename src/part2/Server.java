@@ -98,14 +98,6 @@ public class Server implements Runnable {
                         break;
 
                     case ("audio"):
-                        fileName = bufferedReader.readLine();
-
-                        for (byte b : Files.readAllBytes(Paths.get(fileName))) {
-                            outputStreamWriter.write(b);
-                            outputStreamWriter.flush();
-                        }
-                        break;
-
                     case ("image"):
                         fileName = bufferedReader.readLine();
 
