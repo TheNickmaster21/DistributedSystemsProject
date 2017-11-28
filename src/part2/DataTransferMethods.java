@@ -6,8 +6,8 @@ import java.net.Socket;
 
 public class DataTransferMethods {
 
-    public static final int BUFFER_SIZE = 64;
-    
+    public static final int BUFFER_SIZE = 16;
+
     public static void sendFile(Socket socket, String fileName) {
         try {
             InputStream inputStream = new FileInputStream(fileName);
