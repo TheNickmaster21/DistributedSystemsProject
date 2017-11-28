@@ -1,5 +1,7 @@
 package part2;
 
+import com.sun.istack.internal.NotNull;
+
 import java.io.*;
 
 public class CSVTools {
@@ -8,15 +10,19 @@ public class CSVTools {
 
     }
 
-    public static CSVWriter getCSVWriter(String outputFileUri) {
+    public static CSVWriter getCSVWriter(String outputFileUri) throws IOException {
         File file = new File(outputFileUri);
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        return new CSVWriter(new FileOutputStream(file));
+    }
+
+    public static CSVWriter getCSVWriterIfFileIsNew(String outputFileUri) throws IOException {
+        File file = new File(outputFileUri);
+        if (!file.exists()) {
+            file.createNewFile();
             return new CSVWriter(new FileOutputStream(file));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -41,6 +47,8 @@ public class CSVTools {
         }
 
         public void close() throws IOException {
+            printWriter.flush();
+            printWriter.close();
             fileOutputStream.flush();
             fileOutputStream.close();
         }
