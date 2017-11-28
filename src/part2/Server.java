@@ -80,37 +80,11 @@ public class Server implements Runnable {
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
 
+                DataTransferMethods.sendFile(socket, name);
 
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
-                PrintWriter printWriter = new PrintWriter(outputStreamWriter);
-                InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                String fileName;
-
-                switch (name) {
-                    case ("text"):
-                        String input = bufferedReader.readLine();
-                        while (!input.equals("end")) {
-                            printWriter.write(input.toUpperCase());
-                            input = bufferedReader.readLine();
-                        }
-                        break;
-
-                    case ("audio"):
-                    case ("image"):
-                        fileName = bufferedReader.readLine();
-
-                        for (byte b : Files.readAllBytes(Paths.get(fileName))) {
-                            outputStreamWriter.write(b);
-                            outputStreamWriter.flush();
-                        }
-                        break;
-
-                    default:
-                        System.out.println("Server created with invalid name: " + name);
-                }
                 socket.close();
+
+                System.out.println("Sent File!");
             }
         } catch (IOException e) {
             System.out.println("Server crashed!");
@@ -119,11 +93,26 @@ public class Server implements Runnable {
     }
 
     public static void main(String[] args) throws IOException {
-        Server server = new Server();
-        server.setName("Test Server");
-        server.setPort("5655");
-        server.setRouterIP("127.0.0.1");
-        server.setRouterPort("5555");
-        new Thread(server).start();
-    }
+        Server server1 = new Server();
+        server1.setName("Sample Audio.mp3");
+        server1.setPort("5600");
+        server1.setRouterIP("127.0.0.1");
+        server1.setRouterPort("5555");
+        new Thread(server1).start();
+
+        Server server2 = new Server();
+        server2.setName("Test Image.jpg");
+        server2.setPort("5601");
+        server2.setRouterIP("127.0.0.1");
+        server2.setRouterPort("5555");
+        new Thread(server2).start();
+
+        Server server3 = new Server();
+        server3.setName("testText.txt");
+        server3.setPort("5602");
+        server3.setRouterIP("127.0.0.1");
+        server3.setRouterPort("5556"); //Different
+        new Thread(server3).start();
+
+        System.out.println(InetAddress.getLocalHost().getHostAddress());}
 }

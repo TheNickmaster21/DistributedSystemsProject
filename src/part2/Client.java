@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -80,23 +81,14 @@ public class Client implements Runnable {
             System.err.println("Couldn't get I/O for the connection to: " + routerIP + ":" + routerPort);
             System.exit(1);
         }
+
     }
 
     private void doClientOperation() {
         try {
-            Socket socket = new Socket(routerIP, Integer.parseInt(routerPort));
-            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            Socket socket = new Socket(serverIP, Integer.parseInt(serverPort));
 
-            switch (serverName){
-                case("text"):
-
-                    break;
-                case("audio"):
-                case("image"):
-
-                    break;
-            }
+            DataTransferMethods.receiveFile(socket, serverName);
 
             socket.close();
         } catch (UnknownHostException e) {
@@ -107,14 +99,28 @@ public class Client implements Runnable {
             System.exit(1);
         }
 
-        //Logic for the client talking to the server goes here
+        System.out.println("Received file!");
     }
 
     public static void main(String[] args) throws IOException {
-        Client client = new Client();
-        client.setServerName("Test Server");
-        client.setRouterIP("127.0.0.1");
-        client.setRouterPort("5555");
-        new Thread(client).start();
+        Client client1 = new Client();
+        client1.setServerName("Sample Audio.mp3");
+        client1.setRouterIP("127.0.0.1");
+        client1.setRouterPort("5556"); //Different
+        new Thread(client1).start();
+
+        Client client2 = new Client();
+        client2.setServerName("Test Image.jpg");
+        client2.setRouterIP("127.0.0.1");
+        client2.setRouterPort("5555");
+        new Thread(client2).start();
+
+        Client client3 = new Client();
+        client3.setServerName("testText.txt");
+        client3.setRouterIP("127.0.0.1");
+        client3.setRouterPort("5555");
+        new Thread(client3).start();
+
+        System.out.println(InetAddress.getLocalHost().getHostAddress());
     }
 }
