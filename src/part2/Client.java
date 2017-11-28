@@ -87,7 +87,17 @@ public class Client implements Runnable {
             Socket socket = new Socket(routerIP, Integer.parseInt(routerPort));
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            //TODO Talk to client
+
+            switch (serverName){
+                case("text"):
+
+                    break;
+                case("audio"):
+                case("image"):
+
+                    break;
+            }
+
             socket.close();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + routerIP + ":" + routerPort);

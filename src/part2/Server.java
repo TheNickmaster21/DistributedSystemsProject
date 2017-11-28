@@ -81,6 +81,8 @@ public class Server implements Runnable {
             ServerSocket serverSocket = new ServerSocket(Integer.valueOf(port));
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
+
+
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
                 PrintWriter printWriter = new PrintWriter(outputStreamWriter);
                 InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
