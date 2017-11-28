@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ServerClient implements Runnable {
-
+	
     private String name;
     private String port;
     private Socket socket;

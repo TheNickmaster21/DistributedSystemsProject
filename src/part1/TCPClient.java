@@ -3,6 +3,8 @@ package part1;
 import java.io.*;
 import java.net.*;
 
+import part2.TCPCommunicator;
+
 public class TCPClient {
 
     private static final Boolean DEBUG_OUTPUT = true;

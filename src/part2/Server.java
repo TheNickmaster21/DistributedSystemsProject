@@ -80,7 +80,7 @@ public class Server implements Runnable {
         Server server = new Server();
         server.setName("Test Server");
         server.setPort("5655");
-        server.setRouterIP("127.0.0.1");
+        server.setRouterIP("");
         server.setRouterPort("5555");
         new Thread(server).start();
     }

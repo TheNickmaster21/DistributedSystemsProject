@@ -8,7 +8,7 @@ public class TCPServerRouter {
         Socket clientSocket = null; // socket for the thread
         Object[][] RoutingTable = new Object[10][2]; // routing table
         Boolean Running = true;
-        int ind = 0; // indext in the routing table
+        int ind = 0; // index in the routing table
 
         //Accepting connections
         ServerSocket serverSocket = null; // server socket for accepting connections

@@ -72,6 +72,7 @@ public class Client implements Runnable {
             printWriter.println(serverName);
             setServerIP(bufferedReader.readLine());
             setServerPort(bufferedReader.readLine());
+            printWriter.close();
             socket.close();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + routerIP + ":" + routerPort);
@@ -88,6 +89,7 @@ public class Client implements Runnable {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             //TODO Talk to client
+            printWriter.close();
             socket.close();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + routerIP + ":" + routerPort);
@@ -100,11 +102,4 @@ public class Client implements Runnable {
         //Logic for the client talking to the server goes here
     }
 
-    public static void main(String[] args) throws IOException {
-        Client client = new Client();
-        client.setServerName("Test Server");
-        client.setRouterIP("127.0.0.1");
-        client.setRouterPort("5555");
-        new Thread(client).start();
-    }
 }

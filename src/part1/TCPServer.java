@@ -2,6 +2,8 @@ package part1;
 
 import java.io.*;
 
+import part2.TCPCommunicator;
+
 public class TCPServer {
 
     public static void main(String[] args) throws IOException {
