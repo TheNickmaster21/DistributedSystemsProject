@@ -6,8 +6,8 @@ import java.net.Socket;
 
 public class DataTransferMethods {
 
-    public static final int BUFFER_SIZE = 32;
-
+    public static final int BUFFER_SIZE = 64;
+    
     public static void sendFile(Socket socket, String fileName) {
         try {
             InputStream inputStream = new FileInputStream(fileName);
@@ -67,7 +67,7 @@ public class DataTransferMethods {
 
     public static void main(String[] args) throws IOException {
         int port = 3434;
-        String fileName = "Sample Audio.mp3";
+        String fileName = "testText.txt";
 
         new Thread(() -> {
             try {

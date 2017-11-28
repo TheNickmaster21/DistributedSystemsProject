@@ -1,7 +1,5 @@
 package part2;
 
-import com.sun.istack.internal.NotNull;
-
 import java.io.*;
 
 public class CSVTools {
@@ -15,7 +13,7 @@ public class CSVTools {
         if (!file.exists()) {
             file.createNewFile();
         }
-        return new CSVWriter(new FileOutputStream(file));
+        return new CSVWriter(new FileOutputStream(file, true));
     }
 
     public static CSVWriter getCSVWriterIfFileIsNew(String outputFileUri) throws IOException {
