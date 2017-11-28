@@ -39,7 +39,7 @@ public class DataTransferMethods {
             }
 
             InputStream inputStream = socket.getInputStream();
-            OutputStream outputStream = new FileOutputStream(file);
+            OutputStream outputStream = new FileOutputStream(file, true);
 
             StopWatch stopWatch = new StopWatch();
 
@@ -65,27 +65,22 @@ public class DataTransferMethods {
 
     //Test Region
 
-    static void server() throws IOException {
-        ServerSocket ss = new ServerSocket(3434);
-        Socket socket = ss.accept();
-        sendFile(socket, "Test Image.jpg");
-    }
-
-    static void client() throws IOException {
-        Socket socket = new Socket("localhost", 3434);
-        receiveFile(socket, "Test Image.jpg");
-    }
-
     public static void main(String[] args) throws IOException {
+        int port = 3434;
+        String fileName = "Sample Audio.mp3";
+
         new Thread(() -> {
             try {
-                server();
+                ServerSocket ss = new ServerSocket(port);
+                Socket socket = ss.accept();
+                sendFile(socket, fileName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
 
-        client();
+        Socket socket = new Socket("localhost", port);
+        receiveFile(socket, fileName);
     }
 
 }
